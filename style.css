@@ -1,0 +1,343 @@
+/* ==========================================================
+   Mapa Meteorológico Integral: hoja de estilos corporativa
+   Tema: cartografía topográfica en verdes de bosque
+   ========================================================== */
+
+:root {
+  --forest: #062817;
+  --pine: #0d3b24;
+  --moss: #15573a;
+  --lichen: #bbf7d0;
+  --signal: #4ade80;
+  --signal-strong: #22c55e;
+  --paper: #f0fdf4;
+  --storm: #fbbf24;
+  --danger: #fecaca;
+  --radius-lg: 18px;
+  --radius-sm: 8px;
+  --font: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { background-color: var(--forest); }
+
+body {
+  font-family: var(--font);
+  color: var(--paper);
+  margin: 0;
+  padding: 28px 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--forest);
+  /* Curvas de nivel como textura de fondo */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cg fill='none' stroke='%234ade80' stroke-opacity='0.09' stroke-width='1.2'%3E%3Cpath d='M-20 60 C 60 20, 120 100, 200 60 S 300 20, 340 70'/%3E%3Cpath d='M-20 100 C 60 60, 120 140, 200 100 S 300 60, 340 110'/%3E%3Cpath d='M-20 140 C 70 110, 110 180, 210 140 S 300 100, 340 150'/%3E%3Cellipse cx='240' cy='240' rx='60' ry='34'/%3E%3Cellipse cx='240' cy='240' rx='38' ry='20'/%3E%3Cellipse cx='240' cy='240' rx='16' ry='8'/%3E%3Cpath d='M-20 220 C 40 200, 90 260, 160 230'/%3E%3Cpath d='M-20 260 C 40 240, 90 300, 160 270'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(135deg, #5aa177 0%, #0d3b24 45%, #052e16 100%);
+  background-attachment: fixed;
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- Encabezado ---------- */
+.site-header {
+  text-align: center;
+  margin-bottom: 28px;
+  max-width: 760px;
+}
+
+.site-header h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin: 0 0 12px;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--lichen);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* ---------- Buscador ---------- */
+.layout {
+  width: 100%;
+  max-width: 1120px;
+}
+
+.search-container {
+  display: flex;
+  gap: 10px;
+  max-width: 620px;
+  margin: 0 auto 14px;
+}
+
+input {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 18px;
+  border-radius: 999px;
+  border: 1px solid #15803d;
+  background: rgba(22, 101, 52, 0.85);
+  color: #fff;
+  font: inherit;
+  font-size: 1rem;
+}
+
+input::placeholder { color: var(--lichen); opacity: 0.8; }
+
+input:focus-visible,
+button:focus-visible,
+.chip:focus-visible {
+  outline: 3px solid var(--storm);
+  outline-offset: 2px;
+}
+
+button {
+  padding: 14px 24px;
+  background: var(--signal);
+  color: #14532d;
+  border: none;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.15s;
+  white-space: nowrap;
+}
+
+button:hover { background: var(--signal-strong); }
+button:active { transform: scale(0.97); }
+button:disabled { opacity: 0.6; cursor: progress; }
+
+.quick-picks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.chip {
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: transparent;
+  color: var(--lichen);
+  border: 1px solid rgba(187, 247, 208, 0.35);
+}
+
+.chip:hover { background: rgba(74, 222, 128, 0.15); }
+
+/* ---------- Paneles ---------- */
+.panels {
+  display: grid;
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  gap: 22px;
+  align-items: stretch;
+}
+
+.weather-card {
+  background: rgba(22, 163, 74, 0.92);
+  padding: 26px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.55);
+  border: 1px solid #7fc99a;
+  line-height: 1.6;
+  min-height: 460px;
+}
+
+.empty-state {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.empty-icon { font-size: 3rem; }
+.hint { font-size: 0.85rem; color: var(--lichen); }
+
+.place-name {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 10px;
+}
+
+.description {
+  font-size: 0.86rem;
+  background: #15803d;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  margin: 0 0 10px;
+  line-height: 1.45;
+}
+
+.geo-data {
+  font-size: 0.82rem;
+  color: var(--lichen);
+  font-variant-numeric: tabular-nums;
+}
+
+.geo-data p { margin: 0; }
+
+.divider {
+  border: 0;
+  border-top: 1px solid var(--signal);
+  opacity: 0.6;
+  margin: 18px 0;
+}
+
+/* Lectura principal: temperatura grande */
+.reading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.reading-icon { font-size: 3.4rem; line-height: 1; }
+
+.temp {
+  font-size: 3.6rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.temp small { font-size: 1.4rem; font-weight: 600; }
+
+.condition { margin: 4px 0 0; font-weight: 600; }
+
+.badge {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(6, 40, 23, 0.45);
+  color: var(--lichen);
+}
+
+.badge.alert { background: var(--storm); color: #422006; }
+
+.weather-data h4 {
+  margin: 18px 0 8px;
+  color: var(--lichen);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 0;
+}
+
+.metrics div {
+  background: rgba(6, 40, 23, 0.28);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+}
+
+.metrics dt { font-size: 0.72rem; color: var(--lichen); }
+.metrics dd { margin: 0; font-weight: 800; font-variant-numeric: tabular-nums; }
+
+.forecast {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.forecast li {
+  padding: 8px 2px;
+  border-radius: var(--radius-sm);
+  background: rgba(6, 40, 23, 0.2);
+}
+
+.forecast .f-icon { font-size: 1.3rem; display: block; }
+.forecast .f-max { font-weight: 800; }
+.forecast .f-min { color: var(--lichen); }
+
+.success-footer {
+  margin-top: 18px;
+  font-size: 0.78rem;
+  color: var(--lichen);
+  font-weight: 600;
+}
+
+.error-msg { color: var(--danger); font-weight: 600; }
+
+.loading { display: flex; align-items: center; gap: 10px; }
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- Mapa ---------- */
+.map-wrap {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid #7fc99a;
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.55);
+  min-height: 460px;
+}
+
+#map { width: 100%; height: 100%; min-height: 460px; }
+
+.leaflet-popup-content { font-family: var(--font); }
+
+/* ---------- Pie de página ---------- */
+.site-footer {
+  margin-top: 36px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--lichen);
+}
+
+.site-footer p { margin: 4px 0; }
+.site-footer a { color: var(--paper); }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 860px) {
+  .panels { grid-template-columns: 1fr; }
+  .map-wrap, #map { min-height: 340px; }
+  .weather-card { min-height: 0; }
+}
+
+@media (max-width: 480px) {
+  body { padding: 20px 14px; }
+  .search-container { flex-direction: column; }
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+  .forecast { font-size: 0.72rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation-duration: 3s; }
+  button { transition: none; }
+}

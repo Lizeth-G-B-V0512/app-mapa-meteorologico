@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Aplicación web de mapa meteorológico: geocodificación con OpenStreetMap Nominatim y clima en vivo con Open-Meteo.">
+  <title>Buscador Geográfico Profesional</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Mapa Meteorológico Integral: Localizador Geográfico con Clima en Vivo</h1>
+    <p class="subtitle">Consumo de las APIs de OpenStreetMap y Open-Meteo con control de versiones integral. Por <strong>Lizeth Guadalupe Benitez Venegas</strong></p>
+  </header>
+
+  <main class="layout">
+    <form class="search-container" id="search-form" role="search" autocomplete="off">
+      <label for="city-input" class="sr-only">Lugar a consultar</label>
+      <input type="text" id="city-input" placeholder="Introduce un lugar (ej. Monterrey, Madrid, Lerma)...">
+      <button id="search-btn" type="submit">Consultar API</button>
+    </form>
+
+    <div class="quick-picks" aria-label="Búsquedas rápidas">
+      <button type="button" class="chip" data-place="Lerma">Lerma</button>
+      <button type="button" class="chip" data-place="Ciudad de México">Ciudad de México</button>
+      <button type="button" class="chip" data-place="Monterrey">Monterrey</button>
+      <button type="button" class="chip" data-place="Madrid">Madrid</button>
+      <button type="button" class="chip" data-place="Tokio">Tokio</button>
+    </div>
+
+    <section class="panels">
+      <article id="weather-card" class="weather-card" aria-live="polite">
+        <div class="empty-state">
+          <span class="empty-icon" aria-hidden="true">🧭</span>
+          <p>Introduce una ubicación para desplegar las coordenadas, la descripción geográfica y el clima actual.</p>
+          <p class="hint">También puedes hacer clic en cualquier punto del mapa.</p>
+        </div>
+      </article>
+
+      <div class="map-wrap">
+        <div id="map" role="region" aria-label="Mapa interactivo de OpenStreetMap"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Datos geográficos © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>. Clima por <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>.</p>
+    <p>Práctica IAW, Mtro. René Peña Martínez</p>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="app.js"></script>
+</body>
+</html>
